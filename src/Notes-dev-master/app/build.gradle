@@ -1,0 +1,67 @@
+apply plugin: 'com.android.application'
+
+ext {
+    compileSdkVersion = 35
+    defaultTargetSdkVersion = 21
+}
+
+android {
+    compileSdk 35
+    buildToolsVersion "34.0.0"
+    useLibrary 'org.apache.http.legacy'
+    defaultConfig {
+        applicationId "net.micode.notes"
+        minSdk 21
+        targetSdkVersion defaultTargetSdkVersion
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+    }
+    namespace 'net.micode.notes'
+
+    packagingOptions {
+        exclude 'META-INF/org.apache.http.legacy'
+    }
+}
+
+sonarqube {
+
+    properties {
+
+        property "sonar.host.url", "http://localhost:9000"  //sonar管理系统地址
+
+        property "sonar.login", "admin" // sonar管理系统账号
+
+        property "sonar.password", "Qian15825254201!" // sonar管理系统密码
+
+        property "sonar.sourceEncoding", "UTF-8"
+
+
+
+        property "sonar.projectKey", "qqjnb" //sonar平台中相对应项目的key
+
+        property "sonar.projectName", "qqjnb" //sonar平台中相对应项目的名字
+
+        property "sonar.sources", "src/main/java" //源码，sonar检测的源文件目录
+
+        property "sonar.projectVersion", project.version //版本，随意
+
+        property "sonar.binaries", "build/intermediates/classes"
+    }
+
+}
+
+dependencies {
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.10.0'
+    implementation 'androidx.activity:activity:1.8.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.preference:preference:1.1.1'
+}

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+    此文件定义了一个FrameLayout布局，用于显示一个带有标题栏和列表视图的应用界面。
+    标题栏可以隐藏，列表视图占据主要空间，并且底部有一个创建新笔记的按钮。
+    布局使用了线性布局和框架布局的组合来实现各个组件的定位和排列。
+-->
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/list_background">
+
+    <!-- 线性布局，垂直排列，包含标题栏和ListView -->
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical">
+
+        <!-- 标题栏容器 -->
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:padding="10dp"
+            android:elevation="4dp">
+
+            <!-- 便签图标 - 使用已有图片 -->
+            <ImageView
+                android:id="@+id/iv_note_icon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginRight="8dp"
+                android:src="@drawable/icon"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/app_name"/>
+
+            <!-- 标题栏文字 -->
+            <TextView
+                android:id="@+id/tv_title_bar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:singleLine="true"
+                android:textColor="@color/title_text_color"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/notes_list"
+            android:layout_width="fill_parent"
+            android:layout_height="0dip"
+            android:layout_weight="1"
+            android:cacheColorHint="@null"
+            android:listSelector="@android:color/transparent"
+            android:divider="@null"
+            android:fadingEdge="@null" />
+    </LinearLayout>
+
+    <!-- 创建新笔记按钮，位于布局底部 -->
+    <Button
+        android:id="@+id/btn_new_note"
+        android:background="@drawable/new_note"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:focusable="false"
+        android:layout_gravity="bottom" />
+</FrameLayout>

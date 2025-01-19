@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:versionCode="1"
+    android:versionName="0.1"> <!-- 使用的SDK版本 -->
+    <uses-sdk android:minSdkVersion="25" />
+    <!-- 应用需要的权限 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
+    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <!--连接网络权限，用于执行云端语音能力 -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <!--获取手机录音机使用权限，听写、识别、语义理解需要用到此权限 -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <!--读取网络信息状态 -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <!--获取当前wifi状态 -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <!--允许程序改变网络连接状态 -->
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
+    <!--读取手机信息权限 -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <!--读取联系人权限，上传联系人需要用到此权限 -->
+    <uses-permission android:name="android.permission.READ_CONTACTS"/>
+    <!--外存储写权限，构建语法需要用到此权限 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <!--外存储读权限，构建语法需要用到此权限 -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <!--配置权限，用来记录应用配置信息 -->
+<!--    <uses-permission android:name="android.permission.WRITE_SETTINGS"/>-->
+<!--    &lt;!&ndash;手机定位信息，用来为语义等功能提供定位，提供更精准的服务&ndash;&gt;-->
+    <!--定位信息是敏感信息，可通过Setting.setLocationEnable(false)关闭定位请求 -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <!--如需使用人脸识别，还要添加：摄像头权限，拍照需要用到 -->
+<!--    <uses-permission android:name="android.permission.CAMERA" />-->
+
+    <!-- 定义自定义权限 -->
+    <permission
+        android:name="net.micode.notes.permission.NOTES_PROVIDER_PERMISSION"
+        android:protectionLevel="signature" />
+    <application
+        android:icon="@drawable/icon_app"
+        android:label="@string/app_name">
+        <!-- 欢迎界面 -->
+        <activity
+            android:name=".ui.WelcomeActivity"
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+            <!-- 设置为启动活动 -->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- 主Activity，启动器 -->
+        <activity
+            android:name=".ui.NotesListActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/app_name"
+            android:launchMode="singleTop"
+            android:theme="@style/NoteTheme"
+            android:windowSoftInputMode="adjustPan">
+
+        </activity>
+
+        <!-- 编辑笔记的Activity -->
+        <activity
+            android:name=".ui.NoteEditActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:launchMode="singleTop"
+            android:theme="@style/NoteTheme">
+
+            <!-- 处理外部HTTP链接和编辑意图 -->
+            <intent-filter
+                android:scheme="http"
+                tools:ignore="AppLinkUrlError">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="vnd.android.cursor.item/text_note" />
+                <data android:mimeType="vnd.android.cursor.item/call_note" />
+            </intent-filter>
+            <!-- 处理插入或编辑意图 -->
+            <intent-filter>
+                <action android:name="android.intent.action.INSERT_OR_EDIT" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="vnd.android.cursor.item/text_note" />
+                <data android:mimeType="vnd.android.cursor.item/call_note" />
+            </intent-filter>
+            <!-- 处理搜索意图 -->
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <!-- 搜索配置 -->
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity> <!-- 提供者：用于管理笔记数据 -->
+        <provider
+            android:name=".data.NotesProvider"
+            android:authorities="micode_notes"
+            android:multiprocess="true" /> <!-- 小部件提供者：2x2尺寸 -->
+        <receiver
+            android:name=".widget.NoteWidgetProvider_2x"
+            android:label="@string/app_widget2x2">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="android.appwidget.action.APPWIDGET_DELETED" />
+                <action android:name="android.intent.action.PRIVACY_MODE_CHANGED" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_2x_info" />
+        </receiver> <!-- 小部件提供者：4x4尺寸 -->
+        <receiver
+            android:name=".widget.NoteWidgetProvider_4x"
+            android:label="@string/app_widget4x4">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="android.appwidget.action.APPWIDGET_DELETED" />
+                <action android:name="android.intent.action.PRIVACY_MODE_CHANGED" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_4x_info" />
+        </receiver> <!-- 启动完成时初始化闹钟 -->
+        <receiver android:name=".ui.AlarmInitReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver> <!-- 闹钟接收器：运行在远程进程中 -->
+        <receiver
+            android:name=".ui.AlarmReceiver"
+            android:process=":remote" /> <!-- 闹钟提醒Activity -->
+        <activity
+            android:name=".ui.AlarmAlertActivity"
+            android:label="@string/app_name"
+            android:launchMode="singleInstance"
+            android:theme="@android:style/Theme.Holo.Wallpaper.NoTitleBar" /> <!-- 设置Activity -->
+        <activity
+            android:name=".ui.NotesPreferenceActivity"
+            android:label="@string/preferences_title"
+            android:launchMode="singleTop"
+            android:theme="@android:style/Theme.Holo.Light" /> <!-- 任务同步服务 -->
+        <service
+            android:name=".gtask.remote.GTaskSyncService"
+            android:exported="false" /> <!-- 默认搜索设置 -->
+        <meta-data
+            android:name="android.app.default_searchable"
+            android:value=".ui.NoteEditActivity" />
+        <activity
+            android:name=".ui.TrashNotesActivity"
+            android:label="@string/trash">
+
+        </activity>
+    </application>
+
+</manifest>

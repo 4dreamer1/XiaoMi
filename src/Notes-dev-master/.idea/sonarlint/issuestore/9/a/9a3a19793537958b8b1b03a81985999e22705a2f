@@ -1,0 +1,11 @@
+
+t
+java:S2293("YReplace the type specification in this constructor call with the diamond operator ("<>").(½ñäÿÿÿÿÿ
+P
+java:S1118":Add a private constructor to hide the implicit public one.(ãÛÒÛ
+q
+java:S3252"VUse static access with "android.provider.ContactsContract$DataColumns" for "MIMETYPE".(‡ù¯–ÿÿÿÿÿ
+r
+java:S3252"\Use static access with "android.provider.ContactsContract$DataColumns" for "RAW_CONTACT_ID".(Ğäç÷
+t
+java:S32527"^Use static access with "android.provider.ContactsContract$ContactsColumns" for "DISPLAY_NAME".(Úÿ†Ø

@@ -1,0 +1,32 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+buildscript {
+    repositories {
+        google()
+        jcenter()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:8.6.0'
+        classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:3.3"
+    }
+}
+
+plugins {
+    id "org.sonarqube" version "5.1.0.4882"
+}
+
+ext {
+    defaultTargetSdkVersion = 21
+}
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+    }
+}
+
+apply plugin: "org.sonarqube"
+
